@@ -3,13 +3,20 @@ Camera Integration Module for Smart Farming Drones
 Supports multiple camera inputs: webcam, IP camera, uploaded files
 """
 
-import cv2
 import numpy as np
 import base64
 from datetime import datetime
 from typing import Optional, Tuple, Dict
 import os
 import logging
+
+# OpenCV is optional
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except Exception:
+    CV2_AVAILABLE = False
+    cv2 = None
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -10,9 +10,17 @@ Date: 2024
 """
 
 import os
-import cv2
 import numpy as np
 import pandas as pd
+
+# OpenCV is optional
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except Exception:
+    CV2_AVAILABLE = False
+    cv2 = None
+
 # TensorFlow is optional. Attempt to import, otherwise fall back to rule-based logic.
 try:
     import tensorflow as tf
@@ -20,6 +28,7 @@ try:
     TF_AVAILABLE = True
 except Exception:
     TF_AVAILABLE = False
+    
 import matplotlib.pyplot as plt
 from PIL import Image
 import json
