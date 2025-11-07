@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Farming Drones | AI-Powered Precision Agriculture{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="home" class="hero fade-in-section">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        AI-Powered AgriTech Innovation
+                    </span>
+                    <h1 class="hero-title">
+                        Transform Agriculture with 
+                        <span class="gradient-text">Intelligent Drones</span>
+                    </h1>
+                    <p class="hero-description">
+                        Revolutionize farming with AI-powered drones for crop health monitoring, 
+                        precision spraying, and real-time field analysis. Increase yields by up to 40% 
+                        while reducing resource consumption.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="/dashboard" class="btn btn-primary">
+                            <span>Launch Dashboard</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="#features" class="btn btn-secondary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                            </svg>
+                            <span>Learn More</span>
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-value">40%+</div>
+                            <div class="stat-label">Yield Increase</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">87%</div>
+                            <div class="stat-label">AI Accuracy</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">Resource Saved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features fade-in-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Powerful AI-Driven Capabilities</h2>
+                <p class="section-description">
+                    Advanced technology stack designed for modern precision agriculture
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M2 12h20"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Crop Health Detection</h3>
+                    <p class="feature-description">
+                        AI-powered CNN model identifies healthy vs diseased crops with 87% accuracy
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">NDVI Analysis</h3>
+                    <p class="feature-description">
+                        Real-time vegetation health monitoring using satellite imaging
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Drone Simulation</h3>
+                    <p class="feature-description">
+                        Automated scanning and intelligent spraying decisions
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <line x1="3" y1="9" x2="21" y2="9"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-time Dashboard</h3>
+                    <p class="feature-description">
+                        Interactive web interface with live drone monitoring
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI Reporting</h3>
+                    <p class="feature-description">
+                        Automated analysis and actionable recommendations
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Precision Agriculture</h3>
+                    <p class="feature-description">
+                        Optimal resource utilization through intelligent decisions
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section id="technology" class="technology fade-in-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Technology</span>
+                <h2 class="section-title">Built with Cutting-Edge Tech</h2>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">🤖</div>
+                    <div class="tech-name">TensorFlow</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐍</div>
+                    <div class="tech-name">Python</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🖼️</div>
+                    <div class="tech-name">OpenCV</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🌐</div>
+                    <div class="tech-name">Flask</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📊</div>
+                    <div class="tech-name">Plotly</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📈</div>
+                    <div class="tech-name">NumPy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about fade-in-section">
+        <div class="container">
+            <div class="about-content">
+                <div>
+                    <span class="section-badge">About</span>
+                    <h2 class="section-title">Empowering Indian Agriculture</h2>
+                    <p class="about-description">
+                        AI and Computer Vision integrated with drone technology to revolutionize 
+                        agricultural practices and improve efficiency across India.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">Training Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">&lt;100ms</div>
+                            <div class="stat-label">Inference Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta fade-in-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Transform Your Farm?</h2>
+                <p class="cta-description">
+                    Experience the future of agriculture with AI-powered drone technology
+                </p>
+                <a href="/dashboard" class="btn btn-primary btn-large">
+                    <span>Launch Dashboard</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

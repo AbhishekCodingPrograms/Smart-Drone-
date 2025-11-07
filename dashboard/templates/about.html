@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}About Us | Smart Farming Drones{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<style>
+    .about-section {
+        padding: 120px 0 80px;
+        background: var(--dark);
+    }
+    
+    .about-hero {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+    
+    .about-hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .mission-card {
+        background: var(--dark-light);
+        border-radius: 20px;
+        padding: 60px 40px;
+        margin-bottom: 40px;
+    }
+    
+    .mission-card h2 {
+        font-size: clamp(28px, 5vw, 40px);
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--primary);
+    }
+    
+    .mission-card p {
+        font-size: 18px;
+        line-height: 1.8;
+        color: var(--gray-light);
+    }
+    
+    .stats-section {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+        border-radius: 20px;
+        padding: 60px 40px;
+        margin: 60px 0;
+    }
+    
+    .stat-box {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .stat-box .stat-number {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        color: var(--primary);
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .stat-box .stat-label {
+        font-size: 16px;
+        color: var(--gray-light);
+        font-weight: 500;
+    }
+    
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .value-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .value-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+        transform: translateY(-5px);
+    }
+    
+    .value-icon {
+        font-size: 40px;
+        margin-bottom: 20px;
+    }
+    
+    .value-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--white);
+    }
+    
+    .value-card p {
+        font-size: 15px;
+        color: var(--gray-light);
+        line-height: 1.6;
+    }
+    
+    .team-section {
+        margin-top: 80px;
+    }
+    
+    .team-section h2 {
+        text-align: center;
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 800;
+        margin-bottom: 60px;
+    }
+    
+    @media (max-width: 768px) {
+        .about-section {
+            padding: 100px 0 60px;
+        }
+        
+        .mission-card {
+            padding: 40px 24px;
+        }
+        
+        .stats-section {
+            padding: 40px 24px;
+        }
+        
+        .value-card {
+            padding: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <div class="container">
+        <div class="about-hero">
+            <h1>Transforming Agriculture with AI</h1>
+            <p style="font-size: 20px; color: var(--gray-light); max-width: 700px; margin: 0 auto;">
+                We're on a mission to empower farmers with cutting-edge technology for sustainable and profitable farming
+            </p>
+        </div>
+        
+        <div class="mission-card">
+            <h2>Our Mission</h2>
+            <p>
+                Smart Farming Drones is dedicated to revolutionizing agricultural practices through the power of artificial intelligence and drone technology. We believe that every farmer deserves access to advanced tools that can help them make informed decisions, increase yields, and reduce resource waste.
+            </p>
+            <p>
+                Our AI-powered platform combines computer vision, machine learning, and real-time data analytics to provide farmers with actionable insights about their crops. From early disease detection to precision spraying, we're helping farmers work smarter, not harder.
+            </p>
+        </div>
+        
+        <div class="stats-section">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <span class="stat-number">92%</span>
+                        <span class="stat-label">Training Accuracy</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <span class="stat-number">87%</span>
+                        <span class="stat-label">Disease Detection</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <span class="stat-number">40%+</span>
+                        <span class="stat-label">Yield Increase</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-box">
+                        <span class="stat-number">60%</span>
+                        <span class="stat-label">Resource Saved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team-section">
+            <h2>Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🌱</div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to promoting environmentally friendly farming practices through precision agriculture.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">💡</div>
+                    <h3>Innovation</h3>
+                    <p>Continuously pushing the boundaries of agricultural technology to solve real-world challenges.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Empowerment</h3>
+                    <p>Making advanced technology accessible and affordable for farmers of all scales.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">📈</div>
+                    <h3>Excellence</h3>
+                    <p>Delivering high-quality solutions with proven results and measurable impact.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mission-card mt-5">
+            <h2>The Technology Behind It</h2>
+            <p>
+                Our platform is powered by state-of-the-art convolutional neural networks (CNN) trained on thousands of crop images. The AI model can distinguish between healthy and diseased crops with 87% accuracy, enabling early intervention and preventing crop loss.
+            </p>
+            <p>
+                Combined with NDVI (Normalized Difference Vegetation Index) analysis from satellite imagery, our system provides comprehensive insights into crop health, moisture levels, and growth patterns. The autonomous drone system ensures efficient field coverage with minimal human intervention.
+            </p>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="/contact" class="btn btn-primary btn-large me-3">
+                <span>Contact Us</span>
+            </a>
+            <a href="/dashboard" class="btn btn-secondary btn-large">
+                <span>Try Dashboard</span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

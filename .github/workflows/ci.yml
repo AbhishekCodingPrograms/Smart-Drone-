@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || true
+          pip install flask plotly pandas numpy matplotlib seaborn
+      - name: Lint (basic import check)
+        run: |
+          python - <<'PY'
+          import importlib
+          for m in ['flask','plotly','pandas','numpy','matplotlib','seaborn']:
+              assert importlib.import_module(m)
+          print('Imports OK')
+          PY
+      - name: Build Docker image
+        run: docker build -t smart-farming-dashboard .
+

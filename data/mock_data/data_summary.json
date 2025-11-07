@@ -1,0 +1,11 @@
+{
+  "generated_at": "2025-11-05T19:24:45.136794",
+  "data_files": {
+    "crop_images": "601 images in data\\sample_images",
+    "ndvi_data": "NDVI data in data\\mock_data/ndvi_data.json",
+    "sensor_data": "Sensor readings in data\\mock_data/sensor_data.csv",
+    "weather_data": "Weather data in data\\mock_data/weather_data.csv",
+    "field_zones": "Field zones in data\\mock_data/field_zones.csv"
+  },
+  "description": "Sample data for Smart Farming Drones AI project demonstration"
+}

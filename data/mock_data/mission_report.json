@@ -1,0 +1,28 @@
+{
+  "mission_summary": {
+    "total_zones_scanned": 6,
+    "total_actions_taken": 4,
+    "mission_duration": 22,
+    "battery_consumed": 14.503798056522896,
+    "spray_consumed": 1.4000000000000021
+  },
+  "crop_health_analysis": {
+    "health_distribution": {
+      "Healthy": 2,
+      "Pest-affected": 3,
+      "Diseased": 1
+    },
+    "average_ndvi": 0.42791535864887215,
+    "healthy_percentage": 33.33333333333333
+  },
+  "spraying_analysis": {
+    "pesticide": {
+      "count": 4,
+      "total_quantity": 1.4000000000000001
+    }
+  },
+  "recommendations": [
+    "Significant pest activity - implement integrated pest management"
+  ],
+  "timestamp": "2025-10-15 10:37:25.227761"
+}

@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us | Smart Farming Drones{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<style>
+    .contact-section {
+        padding: 120px 0 80px;
+        background: var(--dark);
+    }
+    
+    .contact-hero {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+    
+    .contact-hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .contact-form-container {
+        background: var(--dark-light);
+        border-radius: 20px;
+        padding: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-label {
+        color: var(--white);
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: block;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: var(--white);
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+    
+    .form-control::placeholder {
+        color: var(--gray);
+    }
+    
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+    
+    .contact-info-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-info-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+        transform: translateY(-5px);
+    }
+    
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(16, 185, 129, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .contact-icon i {
+        font-size: 24px;
+        color: var(--primary);
+    }
+    
+    .contact-info-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--white);
+    }
+    
+    .contact-info-card p {
+        color: var(--gray-light);
+        margin: 0;
+        font-size: 15px;
+    }
+    
+    .social-links-contact {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .social-link {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-light);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .social-link:hover {
+        background: var(--primary);
+        color: var(--white);
+        transform: translateY(-3px);
+        border-color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+        .contact-section {
+            padding: 100px 0 60px;
+        }
+        
+        .contact-form-container {
+            padding: 30px 20px;
+        }
+        
+        .contact-info-card {
+            padding: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-hero">
+            <h1>Get In Touch</h1>
+            <p style="font-size: 20px; color: var(--gray-light); max-width: 700px; margin: 0 auto;">
+                Have questions about our platform? We'd love to hear from you.
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="contact-form-container">
+                    <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 30px;">Send us a Message</h2>
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" placeholder="John Doe" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" placeholder="john@example.com" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" placeholder="+91 98765 43210">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Subject *</label>
+                            <input type="text" class="form-control" placeholder="How can we help you?" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Message *</label>
+                            <textarea class="form-control" placeholder="Tell us more about your inquiry..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-large" style="width: 100%;">
+                            <span>Send Message</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="contact-info-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email Us</h3>
+                    <p>info@smartfarmingdrones.com</p>
+                    <p>support@smartfarmingdrones.com</p>
+                </div>
+                
+                <div class="contact-info-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Call Us</h3>
+                    <p>+91 98765 43210</p>
+                    <p>Mon-Fri: 9AM - 6PM IST</p>
+                </div>
+                
+                <div class="contact-info-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Visit Us</h3>
+                    <p>123 Tech Park, Innovation Drive</p>
+                    <p>Bangalore, Karnataka 560001, India</p>
+                </div>
+                
+                <div class="contact-info-card">
+                    <h3>Follow Us</h3>
+                    <div class="social-links-contact">
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Show success message
+    const formContainer = document.querySelector('.contact-form-container');
+    formContainer.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px;">
+            <div style="font-size: 64px; color: var(--primary); margin-bottom: 20px;">✓</div>
+            <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 16px; color: var(--white);">Message Sent Successfully!</h2>
+            <p style="font-size: 18px; color: var(--gray-light); margin-bottom: 30px;">
+                Thank you for reaching out. We'll get back to you within 24 hours.
+            </p>
+            <a href="/" class="btn btn-primary">
+                <span>Back to Home</span>
+            </a>
+        </div>
+    `;
+});
+</script>
+{% endblock %}

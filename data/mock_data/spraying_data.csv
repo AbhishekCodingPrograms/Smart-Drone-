@@ -1,0 +1,5 @@
+action_id,zone_id,timestamp,action_type,quantity,position,success
+SPRAY_Zone_2_1_20251015_103705,Zone_2_1,2025-10-15 10:37:05.312017,pesticide,0.3,"(250.0, 150.0)",True
+SPRAY_Zone_0_1_20251015_103709,Zone_0_1,2025-10-15 10:37:09.436744,pesticide,0.3,"(50.0, 150.0)",True
+SPRAY_Zone_0_2_20251015_103713,Zone_0_2,2025-10-15 10:37:13.558992,pesticide,0.5,"(50.0, 250.0)",True
+SPRAY_Zone_3_1_20251015_103718,Zone_3_1,2025-10-15 10:37:18.066354,pesticide,0.3,"(350.0, 150.0)",True

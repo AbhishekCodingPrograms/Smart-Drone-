@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming Drones - Dashboard</title>
+    <link rel="preconnect" href="https://cdn.plot.ly" crossorigin>
+    <link rel="preconnect" href="https://code.jquery.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --text: #212529;
+            --card-bg: #ffffff;
+            --muted: #6c757d;
+            --accent: #28a745;
+            --shadow: rgba(0,0,0,0.1);
+        }
+        .dark-theme {
+            --bg: #0f1115;
+            --text: #e9ecef;
+            --card-bg: #151922;
+            --muted: #9aa4b2;
+            --accent: #21b14b;
+            --shadow: rgba(0,0,0,0.35);
+        }
+        body {
+            background-color: var(--bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+        }
+        .navbar {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 6px var(--shadow);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            font-weight: bold;
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-online { background-color: #28a745; }
+        .status-warning { background-color: #ffc107; }
+        .status-offline { background-color: #dc3545; }
+        .metric-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .metric-label {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        .progress {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .progress-bar {
+            background-color: #28a745;
+        }
+        .alert-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        .alert-critical {
+            background-color: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        .field-map {
+            height: 400px;
+            background: linear-gradient(45deg, #e8f5e8, #f0f8f0);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        #leafletMap { height: 420px; border-radius: 10px; }
+        .zone-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .zone-marker:hover {
+            transform: scale(1.2);
+        }
+        .zone-healthy { background-color: #28a745; }
+        .zone-diseased { background-color: #dc3545; }
+        .zone-pest { background-color: #fd7e14; }
+        .btn-mission {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.2s;
+        }
+        .btn-mission:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .chart-container {
+            height: 300px;
+            margin: 20px 0;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+        .kpi-card .kpi-label { color: var(--muted); font-size: 0.85rem; }
+        .kpi-card .kpi-value { font-size: 1.6rem; font-weight: 700; }
+        .kpi-icon { font-size: 1.2rem; opacity: 0.9; }
+        .theme-toggle { border: 0; background: rgba(255,255,255,0.25); color: #fff; border-radius: 20px; padding: 6px 12px; font-weight: 600; }
+        .theme-toggle:hover { background: rgba(255,255,255,0.35); }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-drone"></i> Smart Farming Drones
+            </a>
+            <div class="navbar-nav ms-auto">
+                <button id="themeToggle" class="theme-toggle me-3"><i class="fas fa-moon"></i> Theme</button>
+                <span class="navbar-text">
+                    <span class="status-indicator status-online" id="connectionStatus"></span>
+                    <span id="lastUpdate">Last Update: --</span>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- Mission Control -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-rocket"></i> Mission Control
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex gap-3">
+                                    <button class="btn btn-mission" id="startMission">
+                                        <i class="fas fa-play"></i> Start Mission
+                                    </button>
+                                    <button class="btn btn-danger" id="stopMission" disabled>
+                                        <i class="fas fa-stop"></i> Stop Mission
+                                    </button>
+                                    <button class="btn btn-info" id="generateReport">
+                                        <i class="fas fa-file-alt"></i> Generate Report
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-end">
+                                    <span class="badge bg-success" id="missionStatus">Ready</span>
+                                    <span class="badge bg-secondary" id="missionTimer" style="margin-left:8px;">Elapsed: 00:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Overview -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-label">Average NDVI</div>
+                                <div class="kpi-value" id="kpiAvgNdvi">--</div>
+                            </div>
+                            <div class="kpi-icon text-success"><i class="fas fa-seedling"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-label">Diseased Zones</div>
+                                <div class="kpi-value" id="kpiDiseased">--</div>
+                            </div>
+                            <div class="kpi-icon text-danger"><i class="fas fa-biohazard"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-label">Active Alerts</div>
+                                <div class="kpi-value" id="kpiAlerts">--</div>
+                            </div>
+                            <div class="kpi-icon text-warning"><i class="fas fa-bell"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="kpi-label">Last Sprayed</div>
+                                <div class="kpi-value" id="kpiLastSprayed">--</div>
+                            </div>
+                            <div class="kpi-icon text-info"><i class="fas fa-spray-can"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Overview -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-battery-half"></i> Battery Status
+                    </div>
+                    <div class="card-body metric-card">
+                        <div class="metric-value" id="batteryLevel">--%</div>
+                        <div class="metric-label">Battery Level</div>
+                        <div class="progress">
+                            <div class="progress-bar" id="batteryBar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-tint"></i> Spray Tank
+                    </div>
+                    <div class="card-body metric-card">
+                        <div class="metric-value" id="sprayLevel">--L</div>
+                        <div class="metric-label">Spray Capacity</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" id="sprayBar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-search"></i> Zones Scanned
+                    </div>
+                    <div class="card-body metric-card">
+                        <div class="metric-value" id="zonesScanned">--</div>
+                        <div class="metric-label">Total Scanned</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-check-circle"></i> Success Rate
+                    </div>
+                    <div class="card-body metric-card">
+                        <div class="metric-value" id="successRate">--%</div>
+                        <div class="metric-label">Mission Success</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Field Map and Alerts -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-map"></i> Field Map
+                    </div>
+                    <div class="card-body">
+                        <div class="field-map" id="fieldMap">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Loading field data...
+                            </div>
+                        </div>
+                        <div id="leafletMap" class="mt-3"></div>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <span class="zone-marker zone-healthy"></span> Healthy
+                                <span class="zone-marker zone-diseased"></span> Diseased
+                                <span class="zone-marker zone-pest"></span> Pest-affected
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-exclamation-triangle"></i> Real-time Alerts
+                    </div>
+                    <div class="card-body">
+                        <div id="alertsContainer">
+                            <div class="text-muted text-center">No alerts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Charts -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i> Crop Health Distribution
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" id="healthChart">
+                            <div class="loading">Loading chart...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar"></i> NDVI Distribution
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" id="ndviChart">
+                            <div class="loading">Loading chart...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i> Moisture Levels
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" id="moistureChart">
+                            <div class="loading">Loading chart...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Section -->
+        <div class="row" id="reportSection" style="display: none;">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-file-alt"></i> AI Analysis Report
+                    </div>
+                    <div class="card-body">
+                        <div id="reportContent">
+                            <!-- Report content will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let updateInterval;
+        let isMissionRunning = false;
+        let missionStartTime = null;
+        let missionTimerInterval = null;
+        let currentMissionId = null;
+        let leafletMap = null;
+        let leafletLayer = null;
+        let trackLine = null;
+
+        // Initialize dashboard
+        $(document).ready(function() {
+            initializeDashboard();
+            startDataUpdates();
+        });
+
+        function initializeDashboard() {
+            // Mission control buttons
+            $('#startMission').click(startMission);
+            $('#stopMission').click(stopMission);
+            $('#generateReport').click(generateReport);
+            $('#themeToggle').click(toggleTheme);
+
+            // Initial data load
+            updateDashboardData();
+            applySavedTheme();
+            initLeaflet();
+        }
+
+        function initLeaflet() {
+            try {
+                leafletMap = L.map('leafletMap').setView([28.6139, 77.2090], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; OpenStreetMap'
+                }).addTo(leafletMap);
+                leafletLayer = L.layerGroup().addTo(leafletMap);
+            } catch(_) {}
+        }
+
+        function startDataUpdates() {
+            updateInterval = setInterval(updateDashboardData, 5000); // Update every 5 seconds
+        }
+
+        function updateDashboardData() {
+            // Update drone status
+            $.get('/api/drone_status')
+                .done(function(data) {
+                    updateStatusMetrics(data);
+                })
+                .fail(function() {
+                    $('#connectionStatus').removeClass('status-online').addClass('status-offline');
+                });
+
+            // Update field data
+            $.get('/api/field_data')
+                .done(function(data) {
+                    updateFieldMap(data);
+                    updateKpisWithFieldData(data);
+                });
+
+            // Update mission stats
+            $.get('/api/mission_stats')
+                .done(function(data) {
+                    updateMissionStats(data);
+                });
+
+            // Update alerts
+            $.get('/api/alerts')
+                .done(function(data) {
+                    updateAlerts(data);
+                    updateKpiAlerts(data);
+                });
+
+            // Update last update time
+            $('#lastUpdate').text('Last Update: ' + new Date().toLocaleTimeString());
+            $('#connectionStatus').removeClass('status-offline').addClass('status-online');
+        }
+
+        function updateStatusMetrics(data) {
+            $('#batteryLevel').text(data.battery_level ? data.battery_level.toFixed(1) + '%' : '--%');
+            $('#sprayLevel').text(data.spray_level ? data.spray_level.toFixed(1) + 'L' : '--L');
+            // Update progress bars
+            if (typeof data.battery_level === 'number') {
+                $('#batteryBar').css('width', Math.max(0, Math.min(100, data.battery_level)) + '%');
+                if (data.battery_level < 20) {
+                    $('#batteryBar').removeClass('bg-success').addClass('bg-danger');
+                } else if (data.battery_level < 50) {
+                    $('#batteryBar').removeClass('bg-success bg-danger').addClass('bg-warning');
+                } else {
+                    $('#batteryBar').removeClass('bg-warning bg-danger').addClass('bg-success');
+                }
+            }
+            if (typeof data.spray_level === 'number') {
+                const sprayPercent = (data.spray_level / 10) * 100; // 10L capacity baseline
+                $('#sprayBar').css('width', Math.max(0, Math.min(100, sprayPercent)) + '%');
+            }
+            
+            if (data.is_flying) {
+                $('#missionStatus').removeClass('bg-success bg-danger').addClass('bg-warning').text('Flying');
+                $('#startMission').prop('disabled', true);
+                $('#stopMission').prop('disabled', false);
+                isMissionRunning = true;
+                if (!missionStartTime) {
+                    missionStartTime = new Date();
+                    startMissionTimer();
+                }
+            } else {
+                $('#missionStatus').removeClass('bg-warning bg-danger').addClass('bg-success').text('Ready');
+                $('#startMission').prop('disabled', false);
+                $('#stopMission').prop('disabled', true);
+                isMissionRunning = false;
+                stopMissionTimer();
+            }
+        }
+
+        function updateMissionStats(data) {
+            $('#zonesScanned').text(data.zones_scanned || '--');
+            $('#successRate').text(data.success_rate ? data.success_rate.toFixed(1) + '%' : '--%');
+        }
+
+        function updateFieldMap(data) {
+            const mapContainer = $('#fieldMap');
+            mapContainer.empty();
+
+            if (data.length === 0) {
+                mapContainer.html('<div class="loading"><i class="fas fa-spinner fa-spin"></i> No field data available</div>');
+                return;
+            }
+
+            // Create zone markers
+            data.forEach(function(zone) {
+                const marker = $('<div class="zone-marker"></div>');
+                
+                // Position marker (scaled to fit container)
+                const x = (zone.x / 500) * 100; // Assuming 500m field width
+                const y = (zone.y / 500) * 100; // Assuming 500m field height
+                
+                marker.css({
+                    left: x + '%',
+                    top: y + '%'
+                });
+
+                // Set color based on health status
+                if (zone.health_status === 'Healthy') {
+                    marker.addClass('zone-healthy');
+                } else if (zone.health_status === 'Diseased') {
+                    marker.addClass('zone-diseased');
+                } else if (zone.health_status === 'Pest-affected') {
+                    marker.addClass('zone-pest');
+                }
+
+                // Add tooltip
+                marker.attr('title', 
+                    `Zone: ${zone.zone_id}\n` +
+                    `Health: ${zone.health_status}\n` +
+                    `NDVI: ${zone.ndvi_value.toFixed(2)}\n` +
+                    `Moisture: ${zone.moisture_level.toFixed(1)}%`
+                );
+
+                mapContainer.append(marker);
+            });
+            // Update Leaflet overlay
+            try {
+                if (!leafletMap) return;
+                leafletLayer.clearLayers();
+                fetch('/api/missions').then(r=>r.json()).then(ms => {
+                    const missions = (ms && ms.missions) || [];
+                    const origin = missions.length ? missions[missions.length-1].origin : { lat:28.6139, lng:77.2090 };
+                    const bounds = [];
+                    data.forEach((z) => {
+                        const lat = origin.lat + (z.y - 250) / 111111.0;
+                        const lng = origin.lng + (z.x - 250) / (111111.0 * Math.cos(origin.lat*Math.PI/180));
+                        const color = z.health_status === 'Healthy' ? 'green' : (z.health_status === 'Diseased' ? 'red' : 'orange');
+                        const circle = L.circleMarker([lat,lng], { radius: 6, color, fillColor: color, fillOpacity: 0.9 });
+                        circle.bindTooltip(`Zone ${z.zone_id}<br>NDVI: ${z.ndvi_value.toFixed(2)}<br>Moisture: ${z.moisture_level.toFixed(1)}%`);
+                        circle.addTo(leafletLayer);
+                        bounds.push([lat,lng]);
+                    });
+                    if (bounds.length) leafletMap.fitBounds(bounds, { padding: [20,20] });
+                });
+            } catch(_) {}
+            // Update Last Sprayed KPI
+            try {
+                const timestamps = data.map(z => z.last_sprayed).filter(Boolean).map(t => new Date(t).getTime());
+                if (timestamps.length) {
+                    const lastTs = new Date(Math.max.apply(null, timestamps));
+                    $('#kpiLastSprayed').text(lastTs.toLocaleTimeString());
+                } else {
+                    $('#kpiLastSprayed').text('—');
+                }
+            } catch(_) { $('#kpiLastSprayed').text('—'); }
+        }
+
+        function updateAlerts(data) {
+            const alertsContainer = $('#alertsContainer');
+            
+            if (data.length === 0) {
+                alertsContainer.html('<div class="text-muted text-center">No alerts</div>');
+                return;
+            }
+
+            alertsContainer.empty();
+            data.forEach(function(alert) {
+                const alertClass = alert.type === 'critical' ? 'alert-critical' : 'alert-warning';
+                const alertHtml = `
+                    <div class="alert-item ${alertClass}">
+                        <strong>${alert.type.toUpperCase()}</strong><br>
+                        ${alert.message}<br>
+                        <small class="text-muted">${new Date(alert.timestamp).toLocaleTimeString()}</small>
+                    </div>
+                `;
+                alertsContainer.append(alertHtml);
+            });
+        }
+
+        function startMission() {
+            // Register a mission with origin
+            fetch('/api/missions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: 'Autonomous Mission', origin: { lat: 28.6139, lng: 77.2090 } }) })
+                .then(r=>r.json()).then(res => { currentMissionId = res && res.mission ? res.mission.id : null; }).catch(()=>{});
+
+            $.post('/api/start_mission')
+                .done(function(response) {
+                    if (response.success) {
+                        showNotification('Mission started successfully!', 'success');
+                        missionStartTime = new Date();
+                        startMissionTimer();
+                        loadCharts();
+                        try { if (leafletMap && !trackLine) trackLine = L.polyline([], { color: 'blue' }).addTo(leafletMap); } catch(_) {}
+                    } else {
+                        showNotification('Failed to start mission: ' + response.message, 'error');
+                    }
+                })
+                .fail(function() {
+                    showNotification('Error starting mission', 'error');
+                });
+        }
+
+        function stopMission() {
+            $.post('/api/stop_mission')
+                .done(function(response) {
+                    if (response.success) {
+                        showNotification('Mission stopped successfully!', 'success');
+                        stopMissionTimer();
+                        loadCharts();
+                        trackLine = null;
+                    } else {
+                        showNotification('Failed to stop mission: ' + response.message, 'error');
+                    }
+                })
+                .fail(function() {
+                    showNotification('Error stopping mission', 'error');
+                });
+        }
+
+        function generateReport() {
+            $('#generateReport').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Generating...');
+            
+            $.post('/api/generate_report')
+                .done(function(response) {
+                    if (response.success) {
+                        showReport(response);
+                        showNotification('Report generated successfully!', 'success');
+                    } else {
+                        showNotification('Failed to generate report: ' + response.message, 'error');
+                    }
+                })
+                .fail(function() {
+                    showNotification('Error generating report', 'error');
+                })
+                .always(function() {
+                    $('#generateReport').prop('disabled', false).html('<i class="fas fa-file-alt"></i> Generate Report');
+                });
+        }
+
+        function showReport(response) {
+            const reportSection = $('#reportSection');
+            const reportContent = $('#reportContent');
+            
+            let reportHtml = '<h4>Key Insights:</h4><ul>';
+            response.insights.forEach(function(insight) {
+                reportHtml += `<li>${insight}</li>`;
+            });
+            reportHtml += '</ul>';
+            
+            reportHtml += '<h4>Recommendations:</h4><ul>';
+            response.recommendations.forEach(function(rec) {
+                reportHtml += `<li>${rec}</li>`;
+            });
+            reportHtml += '</ul>';
+            
+            reportHtml += `<div class="mt-3">
+                <a href="/api/download_report" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Download Full Report
+                </a>
+            </div>`;
+            
+            reportContent.html(reportHtml);
+            reportSection.show();
+            
+            // Scroll to report
+            $('html, body').animate({
+                scrollTop: reportSection.offset().top
+            }, 1000);
+        }
+
+        function showNotification(message, type) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const notification = $(`
+                <div class="alert ${alertClass} alert-dismissible fade show position-fixed" 
+                     style="top: 20px; right: 20px; z-index: 9999;">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `);
+            
+            $('body').append(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(function() {
+                notification.alert('close');
+            }, 5000);
+        }
+
+        // KPI helpers
+        function updateKpisWithFieldData(data) {
+            if (!Array.isArray(data) || !data.length) {
+                $('#kpiAvgNdvi').text('--');
+                $('#kpiDiseased').text('--');
+                return;
+            }
+            try {
+                const ndviVals = data.map(z => Number(z.ndvi_value)).filter(v => !isNaN(v));
+                const avg = ndviVals.reduce((a,b)=>a+b,0) / Math.max(1, ndviVals.length);
+                $('#kpiAvgNdvi').text(avg.toFixed(2));
+            } catch(_) { $('#kpiAvgNdvi').text('--'); }
+            try {
+                const diseased = data.filter(z => z.health_status === 'Diseased').length;
+                $('#kpiDiseased').text(String(diseased));
+            } catch(_) { $('#kpiDiseased').text('--'); }
+        }
+        function updateKpiAlerts(alerts) {
+            try {
+                const count = Array.isArray(alerts) ? alerts.length : 0;
+                $('#kpiAlerts').text(String(count));
+            } catch(_) { $('#kpiAlerts').text('--'); }
+        }
+
+        // Theme handling
+        function applySavedTheme() {
+            try {
+                const saved = localStorage.getItem('theme') || '';
+                if (saved === 'dark') document.documentElement.classList.add('dark-theme');
+                updateThemeButton();
+            } catch(_) {}
+        }
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark-theme');
+            const isDark = document.documentElement.classList.contains('dark-theme');
+            try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(_) {}
+            updateThemeButton();
+        }
+        function updateThemeButton() {
+            const isDark = document.documentElement.classList.contains('dark-theme');
+            $('#themeToggle').html(isDark ? '<i class="fas fa-sun"></i> Theme' : '<i class="fas fa-moon"></i> Theme');
+        }
+
+        // Load charts
+        function loadCharts() {
+            // Health chart
+            $.get('/api/health_chart')
+                .done(function(data) {
+                    $('#healthChart').html(data);
+                });
+
+            // NDVI chart
+            $.get('/api/ndvi_chart')
+                .done(function(data) {
+                    $('#ndviChart').html(data);
+                });
+
+            // Moisture chart
+            $.get('/api/moisture_chart')
+                .done(function(data) {
+                    $('#moistureChart').html(data);
+                });
+        }
+
+        // Load charts every 30 seconds
+        setInterval(loadCharts, 30000);
+        loadCharts(); // Initial load
+
+        // Mission timer helpers
+        function startMissionTimer() {
+            updateMissionTimer();
+            if (missionTimerInterval) clearInterval(missionTimerInterval);
+            missionTimerInterval = setInterval(updateMissionTimer, 1000);
+        }
+        function stopMissionTimer() {
+            if (missionTimerInterval) clearInterval(missionTimerInterval);
+            missionTimerInterval = null;
+            missionStartTime = null;
+            $('#missionTimer').text('Elapsed: 00:00');
+        }
+        function updateMissionTimer() {
+            if (!missionStartTime) return;
+            const now = new Date();
+            const seconds = Math.floor((now - missionStartTime) / 1000);
+            const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
+            const ss = String(seconds % 60).padStart(2, '0');
+            $('#missionTimer').text(`Elapsed: ${mm}:${ss}`);
+        }
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Smart Farming - Crop Health Scanner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <button id="menuBtn" class="hamburger" aria-label="Open menu">☰</button>
+    <h1>Smart Farming • Crop Health</h1>
+  </header>
+
+  <aside id="drawer" class="drawer">
+    <div class="drawer-header">
+      <span class="title">Menu</span>
+      <button id="closeDrawer" class="close">✕</button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="#home" data-link="home" class="nav-link">Home</a>
+      <a href="#scanner" data-link="scanner" class="nav-link">Scanner</a>
+      <a href="#about" data-link="about" class="nav-link">About</a>
+    </nav>
+  </aside>
+  <div id="backdrop" class="backdrop hidden"></div>
+
+  <main>
+    <!-- Home Page -->
+    <section id="page-home" class="page">
+      <div class="hero">
+        <h2>Welcome to Smart Farming! 🌱</h2>
+        <p>Hello! Scan crops to estimate health and build your local snapshot library.</p>
+      </div>
+      <div class="cards">
+        <div class="card stat">
+          <div class="stat-top">
+            <span class="stat-title">Snapshots</span>
+            <span class="pill blue">📷</span>
+          </div>
+          <div class="stat-value" id="statSnapshots">0</div>
+          <div class="stat-sub">Saved locally</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-top">
+            <span class="stat-title">Healthy</span>
+            <span class="pill green">🟢</span>
+          </div>
+          <div class="stat-value" id="statHealthy">0</div>
+          <div class="stat-sub">Good vegetation</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-top">
+            <span class="stat-title">Borderline</span>
+            <span class="pill amber">🟡</span>
+          </div>
+          <div class="stat-value" id="statBorderline">0</div>
+          <div class="stat-sub">Needs attention</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-top">
+            <span class="stat-title">Unhealthy</span>
+            <span class="pill red">🔴</span>
+          </div>
+          <div class="stat-value" id="statUnhealthy">0</div>
+          <div class="stat-sub">Intervention required</div>
+        </div>
+      </div>
+      <a class="cta wide" href="#scanner">➜ Start Scanning</a>
+    </section>
+
+    <!-- Scanner Page -->
+    <section id="page-scanner" class="page hidden">
+      <div class="video-container">
+        <video id="video" playsinline autoplay></video>
+        <canvas id="overlay"></canvas>
+        <div id="errorBanner" class="error-banner hidden"></div>
+      </div>
+
+      <div class="controls">
+        <div class="left">
+          <button id="startBtn" class="primary">Start Camera</button>
+          <button id="switchBtn">Switch</button>
+          <button id="snapBtn">Snapshot</button>
+          <select id="mode" title="Visualization Mode">
+            <option value="combined" selected>Combined</option>
+            <option value="vari">VARI</option>
+            <option value="exg">ExG</option>
+          </select>
+        </div>
+        <div class="right">
+          <label class="opacity">Heat Opacity
+            <input id="opacity" type="range" min="0" max="1" step="0.05" value="0.3" />
+          </label>
+          <span id="status" class="status badge">Status: —</span>
+        </div>
+      </div>
+
+      <section class="help">
+        <p><strong>Tip:</strong> If camera doesn’t start, tap <em>Start Camera</em> and allow permission, then use <em>Switch</em> for back camera.</p>
+      </section>
+
+      <canvas id="processor" class="hidden"></canvas>
+    </section>
+
+    <!-- About Page -->
+    <section id="page-about" class="page hidden">
+      <div class="content">
+        <h2>About</h2>
+        <p>This app estimates crop health from live camera using vegetation indices (VARI/ExG). Data never leaves your device.</p>
+        <ul>
+          <li>On-device processing</li>
+          <li>No tracking, no ads</li>
+          <li>Open camera only on the Scanner page</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Data Page -->
+    <section id="page-data" class="page hidden">
+      <div class="content">
+        <h2>Data</h2>
+        <p>Recent snapshots and statuses are stored on your device.</p>
+        <div id="dataEmpty" class="muted">No snapshots yet. Use Snapshot on the Scanner page.</div>
+        <div id="dataList" class="data-list"></div>
+        <button id="clearData" class="danger">Clear All</button>
+      </div>
+    </section>
+
+    <!-- Login Page -->
+    <section id="page-login" class="page hidden">
+      <div class="content auth">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <label>Email
+            <input type="email" id="loginEmail" required placeholder="you@example.com" />
+          </label>
+          <label>Password
+            <input type="password" id="loginPassword" required placeholder="••••••••" />
+          </label>
+          <div class="auth-actions">
+            <button type="submit" class="primary">Sign In</button>
+            <button type="button" id="signupBtn" class="secondary">Create Account</button>
+          </div>
+        </form>
+        <div id="loginStatus" class="muted"></div>
+        <div class="session" id="sessionBox" hidden>
+          <p>Signed in as <strong id="userEmail"></strong></p>
+          <button id="logoutBtn" class="secondary">Sign Out</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <nav class="bottom-nav" id="bottomNav">
+      <span class="indicator" id="navIndicator"></span>
+      <a href="#home" data-link="home" class="tab"><span>🏠</span><em>Home</em></a>
+      <a href="#data" data-link="data" class="tab"><span>📊</span><em>Data</em></a>
+      <a href="#scanner" data-link="scanner" class="tab fab"><span>📷</span><em>Scan</em></a>
+      <a href="#about" data-link="about" class="tab"><span>ℹ️</span><em>About</em></a>
+      <a href="#login" data-link="login" class="tab"><span>🔐</span><em>Login</em></a>
+    </nav>
+  </footer>
+
+  <!-- Firebase SDKs (App + Auth) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

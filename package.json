@@ -1,0 +1,22 @@
+{
+  "name": "smart-ai-powered-forming",
+  "version": "1.0.0",
+  "description": "This project demonstrates how Artificial Intelligence (AI) and Computer Vision can be integrated with drone technology to improve agricultural efficiency and productivity in India. The system includes modules for crop health monitoring, soil analysis, automated spraying simulation, and precision agriculture using AI and data analytics.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dashboard": "python main.py dashboard",
+    "android:sync": "npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build": "npx cap build android"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3"
+  }
+}

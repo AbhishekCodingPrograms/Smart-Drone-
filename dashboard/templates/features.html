@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Features | Smart Farming Drones{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<style>
+    .feature-detail-section {
+        padding: 120px 0 80px;
+        background: var(--dark);
+    }
+    
+    .feature-hero {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+    
+    .feature-hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .feature-hero p {
+        font-size: 20px;
+        color: var(--gray-light);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .feature-detail-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 40px;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-detail-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+        transform: translateY(-5px);
+    }
+    
+    .feature-detail-icon {
+        width: 70px;
+        height: 70px;
+        background: rgba(16, 185, 129, 0.1);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+    }
+    
+    .feature-detail-icon i {
+        font-size: 32px;
+        color: var(--primary);
+    }
+    
+    .feature-detail-card h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: var(--white);
+    }
+    
+    .feature-detail-card p {
+        font-size: 16px;
+        line-height: 1.7;
+        color: var(--gray-light);
+        margin-bottom: 20px;
+    }
+    
+    .feature-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .feature-list li {
+        padding: 10px 0;
+        padding-left: 30px;
+        position: relative;
+        color: var(--gray-light);
+    }
+    
+    .feature-list li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--primary);
+        font-weight: bold;
+        font-size: 18px;
+    }
+    
+    @media (max-width: 768px) {
+        .feature-detail-section {
+            padding: 100px 0 60px;
+        }
+        
+        .feature-detail-card {
+            padding: 24px;
+        }
+        
+        .feature-hero {
+            margin-bottom: 60px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="feature-detail-section">
+    <div class="container">
+        <div class="feature-hero">
+            <h1>Powerful Features for Modern Agriculture</h1>
+            <p>Advanced AI and drone technology to revolutionize your farming operations</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="feature-detail-card">
+                    <div class="feature-detail-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Crop Health Detection</h3>
+                    <p>Our advanced CNN model analyzes crop images in real-time to identify health issues before they become critical.</p>
+                    <ul class="feature-list">
+                        <li>87% accuracy in disease detection</li>
+                        <li>Real-time image processing</li>
+                        <li>Early warning system</li>
+                        <li>Multi-crop support</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-detail-card">
+                    <div class="feature-detail-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>NDVI Analysis</h3>
+                    <p>Normalized Difference Vegetation Index monitoring provides detailed insights into plant health and vigor.</p>
+                    <ul class="feature-list">
+                        <li>Satellite-grade accuracy</li>
+                        <li>Historical data tracking</li>
+                        <li>Anomaly detection</li>
+                        <li>Growth pattern analysis</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-detail-card">
+                    <div class="feature-detail-icon">
+                        <i class="fas fa-drone"></i>
+                    </div>
+                    <h3>Autonomous Drone Operations</h3>
+                    <p>Fully automated flight paths with intelligent decision-making for optimal field coverage.</p>
+                    <ul class="feature-list">
+                        <li>GPS-guided navigation</li>
+                        <li>Obstacle avoidance</li>
+                        <li>Precision spraying</li>
+                        <li>Battery optimization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-detail-card">
+                    <div class="feature-detail-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Real-Time Dashboard</h3>
+                    <p>Comprehensive monitoring system with live telemetry and actionable insights.</p>
+                    <ul class="feature-list">
+                        <li>Live drone tracking</li>
+                        <li>Field analytics</li>
+                        <li>Alert system</li>
+                        <li>Mobile responsive</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-detail-card">
+                    <div class="feature-detail-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Cloud Integration</h3>
+                    <p>Secure cloud storage and processing for all your agricultural data.</p>
+                    <ul class="feature-list">
+                        <li>Automatic backups</li>
+                        <li>Multi-device sync</li>
+                        <li>Data security</li>
+                        <li>API access</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="feature-detail-card">
+                    <div class="feature-detail-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>AI-Generated Reports</h3>
+                    <p>Comprehensive analysis reports with actionable recommendations.</p>
+                    <ul class="feature-list">
+                        <li>Automated insights</li>
+                        <li>Custom reporting</li>
+                        <li>Export options</li>
+                        <li>Trend analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="/dashboard" class="btn btn-primary btn-large">
+                <span>Try Dashboard</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

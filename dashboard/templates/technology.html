@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block title %}Technology | Smart Farming Drones{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<style>
+    .tech-section {
+        padding: 120px 0 80px;
+        background: var(--dark);
+    }
+    
+    .tech-hero {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+    
+    .tech-hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .tech-stack-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 40px;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .tech-stack-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+        transform: translateY(-5px);
+    }
+    
+    .tech-icon-large {
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+    
+    .tech-stack-card h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--white);
+    }
+    
+    .tech-stack-card p {
+        color: var(--gray-light);
+        line-height: 1.7;
+        margin-bottom: 20px;
+    }
+    
+    .tech-badge {
+        display: inline-block;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin: 4px;
+    }
+    
+    .architecture-section {
+        background: var(--dark-light);
+        padding: 80px 0;
+        margin-top: 80px;
+        border-radius: 20px;
+    }
+    
+    .architecture-section h2 {
+        text-align: center;
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 800;
+        margin-bottom: 60px;
+    }
+    
+    .architecture-layer {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .architecture-layer h4 {
+        color: var(--primary);
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+    
+    @media (max-width: 768px) {
+        .tech-section {
+            padding: 100px 0 60px;
+        }
+        
+        .tech-stack-card {
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .architecture-section {
+            padding: 60px 20px;
+            margin-top: 60px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="tech-section">
+    <div class="container">
+        <div class="tech-hero">
+            <h1>Cutting-Edge Technology Stack</h1>
+            <p style="font-size: 20px; color: var(--gray-light); max-width: 700px; margin: 0 auto;">
+                Built with modern frameworks and AI-powered tools for maximum performance and reliability
+            </p>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="tech-stack-card">
+                    <div class="tech-icon-large">🤖</div>
+                    <h3>Machine Learning</h3>
+                    <p>Advanced deep learning models for crop health analysis and prediction.</p>
+                    <div>
+                        <span class="tech-badge">TensorFlow</span>
+                        <span class="tech-badge">Keras</span>
+                        <span class="tech-badge">CNN</span>
+                        <span class="tech-badge">Image Recognition</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="tech-stack-card">
+                    <div class="tech-icon-large">🐍</div>
+                    <h3>Backend Development</h3>
+                    <p>Robust and scalable backend infrastructure for data processing.</p>
+                    <div>
+                        <span class="tech-badge">Python</span>
+                        <span class="tech-badge">Flask</span>
+                        <span class="tech-badge">NumPy</span>
+                        <span class="tech-badge">Pandas</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="tech-stack-card">
+                    <div class="tech-icon-large">🖼️</div>
+                    <h3>Computer Vision</h3>
+                    <p>Real-time image processing and analysis capabilities.</p>
+                    <div>
+                        <span class="tech-badge">OpenCV</span>
+                        <span class="tech-badge">PIL</span>
+                        <span class="tech-badge">NDVI</span>
+                        <span class="tech-badge">Image Processing</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="tech-stack-card">
+                    <div class="tech-icon-large">🌐</div>
+                    <h3>Web Technologies</h3>
+                    <p>Modern web stack for responsive and interactive interfaces.</p>
+                    <div>
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="tech-stack-card">
+                    <div class="tech-icon-large">📊</div>
+                    <h3>Data Visualization</h3>
+                    <p>Interactive charts and maps for data-driven insights.</p>
+                    <div>
+                        <span class="tech-badge">Plotly</span>
+                        <span class="tech-badge">Chart.js</span>
+                        <span class="tech-badge">Leaflet</span>
+                        <span class="tech-badge">D3.js</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="tech-stack-card">
+                    <div class="tech-icon-large">🚁</div>
+                    <h3>Drone Integration</h3>
+                    <p>Seamless communication with drone hardware and sensors.</p>
+                    <div>
+                        <span class="tech-badge">MAVLink</span>
+                        <span class="tech-badge">DroneKit</span>
+                        <span class="tech-badge">GPS</span>
+                        <span class="tech-badge">IoT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="architecture-section">
+            <div class="container">
+                <h2>System Architecture</h2>
+                
+                <div class="architecture-layer">
+                    <h4>🎯 Presentation Layer</h4>
+                    <p style="color: var(--gray-light); margin: 0;">
+                        Responsive web interface with real-time dashboard, interactive maps, and data visualization components.
+                    </p>
+                </div>
+                
+                <div class="architecture-layer">
+                    <h4>⚙️ Application Layer</h4>
+                    <p style="color: var(--gray-light); margin: 0;">
+                        Flask-based REST API handling business logic, drone communication, and AI model integration.
+                    </p>
+                </div>
+                
+                <div class="architecture-layer">
+                    <h4>🧠 AI/ML Layer</h4>
+                    <p style="color: var(--gray-light); margin: 0;">
+                        TensorFlow models for crop disease detection, NDVI analysis, and predictive analytics.
+                    </p>
+                </div>
+                
+                <div class="architecture-layer">
+                    <h4>💾 Data Layer</h4>
+                    <p style="color: var(--gray-light); margin: 0;">
+                        Secure data storage with cloud integration for field data, drone telemetry, and analysis reports.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="/dashboard" class="btn btn-primary btn-large">
+                <span>See It In Action</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
